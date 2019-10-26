@@ -3,7 +3,7 @@ import json
 import hashlib
 
 def construct_zec_challenge(str_version_reversed, str_prev_hash_reversed, str_merkle_root_reversed, str_reseverd, str_time_reversed, str_nbits_reversed, str_nonce_reversed, str_soln_reversed):
-    return str_version_reversed + str_prev_hash_reversed + str_merkle_root_reversed + str_reseverd + str_time_reversed + str_nbits_reversed + str_nonce_reversed + str_soln_reversed
+    return str_version_reversed + str_prev_hash_reversed + str_merkle_root_reversed + str_reseverd + str_time_reversed + str_nbits_reversed + str_nonce_reversed + 'fd4005' + str_soln_reversed
 
 #{"hash"(reversed):"0000000004b2b218261ab1294baf33a212c5c62c6c1946e483ab5df0afbe9869",
 #"mainChain":true,"size":1619,"height":228942,"transactions":1,"version":4(04000000 reversed),
@@ -24,7 +24,7 @@ def get_parameter_from_block_data(block_json_str):
     str_reserved = '0000000000000000000000000000000000000000000000000000000000000000'
     str_time_reversed = reverse.reverse(hex(block_json[0]['timestamp'])[2:])
     str_nbits_reversed = reverse.reverse(block_json[0]['bits'])
-    str_nonce_reversed = block_json[0]['nonce']
+    str_nonce_reversed = reverse.reverse(block_json[0]['nonce'])
     str_soln_reversed = block_json[0]['solution']
     return str_version_reversed, str_prev_hash_reversed, str_merkle_root_reversed, str_reserved, str_time_reversed, \
            str_nbits_reversed, str_nonce_reversed, str_soln_reversed
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         str_nbits_reversed, str_nonce_reversed, str_soln_reversed = get_parameter_from_block_data(block_json_str)
     chanllenge = construct_zec_challenge(str_version_reversed, str_prev_hash_reversed, str_merkle_root_reversed, str_reserved,
                                   str_time_reversed, str_nbits_reversed, str_nonce_reversed, str_soln_reversed)
-    print(chanllenge[:280])
+    print(chanllenge[:286])
     print("chanllenge len is %d"%(chanllenge.__len__()/2 -1344))
     hash_str = hash(chanllenge)
     print(hash_str)
